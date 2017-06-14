@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { IngredientService } from './ingredient.service';
-import { Rice } from '../../model/rice';
+import { Rice } from '../../model/rice/rice';
 @Injectable()
 
 export class RiceService {
@@ -10,6 +10,6 @@ export class RiceService {
   constructor(public ingredientService: IngredientService) {
 
     this.rice$ = this.ingredientService.ingredient$
-      .filter(food => food.name === 'rice');
+      .filter(ingredient => ingredient.name === 'rice');
   }
 }

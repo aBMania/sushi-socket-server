@@ -14,5 +14,17 @@
     <h2>Rice: {{ (riceCount$ | async) ? (riceCount$ | async) : 0  }}</h2>
     <pre style="font-size: 10px">{{ (rice$ | async)?.text }}</pre>
   </li>
+  <li>
+    <h2>Sauce: {{ (sauceCount$ | async) ? (sauceCount$ | async) : 0  }}</h2>
+    <pre style="font-size: 10px">{{ (sauce$ | async)?.text }}</pre>
+  </li>
+  <li>
+    <h2>Garnish: {{ (garnishCount$ | async) ? (garnishCount$ | async) : 0  }}</h2>
+    <pre style="font-size: 10px">{{ (garnish$ | async)?.text }}</pre>
+  </li>
+  <li>
+    <h2>Wrapper: {{ (wrapperCount$ | async) ? (wrapperCount$ | async) : 0  }}</h2>
+    <pre style="font-size: 10px">{{ (wrapper$ | async)?.text }}</pre>
+  </li>
 </ul>
 
