@@ -7,24 +7,63 @@
 <h2>Ingredients</h2>
 <ul>
   <li>
-    <h2>Fish: {{ (fishCount$ | async) ? (fishCount$ | async) : 0 }}</h2>
-    <pre style="font-size: 10px"> {{ (fish$ | async)?.text }}</pre>
+    <h2>Fish: {{ (fishStash.all$ | async)?.length }}</h2>
+    <ul>
+      <li>
+        Salmon: {{ (fishStash.salmon$ | async)?.length }}
+      </li>
+      <li>
+        Tuna: {{ (fishStash.tuna$ | async)?.length }}
+      </li>
+      <li>
+        Crab: {{ (fishStash.crab$ | async)?.length }}
+      </li>
+      <li>
+        Surimi: {{ (fishStash.surimi$ | async)?.length }}
+      </li>
+    </ul>
   </li>
   <li>
-    <h2>Rice: {{ (riceCount$ | async) ? (riceCount$ | async) : 0  }}</h2>
-    <pre style="font-size: 10px">{{ (rice$ | async)?.text }}</pre>
+    <h2>Garnish: {{ (garnishStash.all$ | async)?.length }}</h2>
+    <ul>
+      <li>
+        Avocado: {{ (garnishStash.avocado$ | async)?.length }}
+      </li>
+      <li>
+        Cheese: {{ (garnishStash.cheese$ | async)?.length }}
+      </li>
+      <li>
+        Cucumber: {{ (garnishStash.cucumber$ | async)?.length }}
+      </li>
+      <li>
+        Strawberry: {{ (garnishStash.strawberry$ | async)?.length }}
+      </li>
+    </ul>
   </li>
   <li>
-    <h2>Sauce: {{ (sauceCount$ | async) ? (sauceCount$ | async) : 0  }}</h2>
-    <pre style="font-size: 10px">{{ (sauce$ | async)?.text }}</pre>
+    <h2>Rice: {{ (riceStash.rice$ | async)?.length }}</h2>
   </li>
   <li>
-    <h2>Garnish: {{ (garnishCount$ | async) ? (garnishCount$ | async) : 0  }}</h2>
-    <pre style="font-size: 10px">{{ (garnish$ | async)?.text }}</pre>
+    <h2>Sauce: {{ (sauceStash.all$ | async)?.length }}</h2>
+    <ul>
+      <li>
+        Soja: {{ (sauceStash.soja$ | async)?.length }}
+      </li>
+      <li>
+        Wasabi: {{ (sauceStash.wasabi$ | async)?.length }}
+      </li>
+    </ul>
   </li>
   <li>
-    <h2>Wrapper: {{ (wrapperCount$ | async) ? (wrapperCount$ | async) : 0  }}</h2>
-    <pre style="font-size: 10px">{{ (wrapper$ | async)?.text }}</pre>
+    <h2>Wrapper: {{ (wrapperStash.all$ | async)?.length }}</h2>
+    <ul>
+      <li>
+        Algua: {{ (wrapperStash.algua$ | async)?.length }}
+      </li>
+      <li>
+        Egg: {{ (wrapperStash.egg$ | async)?.length }}
+      </li>
+    </ul>
   </li>
 </ul>
 

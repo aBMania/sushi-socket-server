@@ -1,7 +1,7 @@
 import { Garnish } from './garnish';
 
-export class Cheese extends Garnish {
+export class Strawberry extends Garnish {
   public get expirationTime(): number {
-    return 5 * 60;
+    return 2 * 60;
   }
 }

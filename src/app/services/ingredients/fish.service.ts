@@ -6,30 +6,39 @@ import { IngredientService } from './ingredient.service';
 import { Tuna } from '../../model/fish/tuna';
 import { Crab } from '../../model/fish/crab';
 import { Surimi } from '../../model/fish/surimi';
+
+
 @Injectable()
-
 export class FishService {
-  public fish$: Observable<Fish>;
-
-  public salmon$: Observable<Salmon>;
-  public tuna$: Observable<Tuna>;
-  public crab$: Observable<Crab>;
-  public surimi$: Observable<Surimi>;
+  public stash: FishStash;
 
   constructor(public ingredientService: IngredientService) {
+    const salmonStream$ = this.ingredientService.getIngredientStream<Salmon>(Salmon, 'salmon');
+    const tunaStream$ = this.ingredientService.getIngredientStream<Tuna>(Tuna, 'tuna');
+    const crabStream$ = this.ingredientService.getIngredientStream<Crab>(Crab, 'crab');
+    const surimiStream$ = this.ingredientService.getIngredientStream<Surimi>(Surimi, 'surimi');
 
-    this.salmon$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'salmon');
+    this.stash = {
+      salmon$: IngredientService.stashFromStream(salmonStream$),
+      tuna$: IngredientService.stashFromStream(tunaStream$),
+      crab$: IngredientService.stashFromStream(crabStream$),
+      surimi$: IngredientService.stashFromStream(surimiStream$),
+      all$: null,
+    };
 
-    this.tuna$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'tuna');
-
-    this.crab$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'crab');
-
-    this.surimi$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'surimi');
-
-    this.fish$ = Observable.merge(this.salmon$, this.tuna$, this.crab$, this.surimi$);
+    this.stash.all$ = IngredientService.combineStashes(
+      this.stash.salmon$,
+      this.stash.tuna$,
+      this.stash.crab$,
+      this.stash.surimi$,
+    );
   }
+}
+
+export interface FishStash {
+  all$: Observable<Fish[]>;
+  salmon$: Observable<Salmon[]>;
+  tuna$: Observable<Salmon[]>;
+  crab$: Observable<Salmon[]>;
+  surimi$: Observable<Salmon[]>;
 }

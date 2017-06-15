@@ -1,5 +1,5 @@
 import { Ingredient } from '../ingredient';
 
-export class Wrapper extends Ingredient {
+export abstract class Wrapper extends Ingredient {
 
 }

@@ -1,30 +1,44 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { Sauce } from '../../model/sauce/sauce';
 import { IngredientService } from './ingredient.service';
-import { Cucumber } from '../../model/garnish/cucumber';
 import { Avocado } from '../../model/garnish/avocado';
+import { Garnish } from '../../model/garnish/garnish';
 import { Cheese } from '../../model/garnish/cheese';
+import { Cucumber } from '../../model/garnish/cucumber';
+import { Strawberry } from '../../model/garnish/strawberry';
+
 @Injectable()
-
 export class GarnishService {
-  public garnish$: Observable<Sauce>;
-
-  public avocado$: Observable<Avocado>;
-  public cucumber$: Observable<Cucumber>;
-  public cheese$: Observable<Cheese>;
+  public stash: GarnishStash;
 
   constructor(public ingredientService: IngredientService) {
+    const avocadoStream$ = this.ingredientService.getIngredientStream<Avocado>(Avocado, 'avocado');
+    const cheeseStream$ = this.ingredientService.getIngredientStream<Cheese>(Cheese, 'cheese');
+    const cucumberStream$ = this.ingredientService.getIngredientStream<Cucumber>(Cucumber, 'cucumber');
+    const strawberryStream$ = this.ingredientService.getIngredientStream<Strawberry>(Strawberry, 'strawberry');
 
-    this.avocado$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'avocado');
+    this.stash = {
+      avocado$: IngredientService.stashFromStream(avocadoStream$),
+      cheese$: IngredientService.stashFromStream(cheeseStream$),
+      cucumber$: IngredientService.stashFromStream(cucumberStream$),
+      strawberry$: IngredientService.stashFromStream(strawberryStream$),
+      all$: null
+    };
 
-    this.cucumber$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'cucumber');
-
-    this.cheese$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'cheese');
-
-    this.garnish$ = Observable.merge(this.avocado$, this.cucumber$, this.cheese$);
+    this.stash.all$ = IngredientService.combineStashes(
+      this.stash.avocado$,
+      this.stash.cheese$,
+      this.stash.cucumber$,
+      this.stash.strawberry$
+    );
   }
 }
+
+export interface GarnishStash {
+  all$: Observable<Garnish[]>
+  avocado$: Observable<Avocado[]>;
+  cheese$: Observable<Cheese[]>;
+  cucumber$: Observable<Cucumber[]>;
+  strawberry$: Observable<Strawberry[]>;
+}
+

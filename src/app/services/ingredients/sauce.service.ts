@@ -4,22 +4,31 @@ import { Sauce } from '../../model/sauce/sauce';
 import { IngredientService } from './ingredient.service';
 import { Wasabi } from '../../model/sauce/wasabi';
 import { Soja } from '../../model/sauce/soja';
+
 @Injectable()
-
 export class SauceService {
-  public sauce$: Observable<Sauce>;
-
-  public wasabi$: Observable<Wasabi>;
-  public soja$: Observable<Soja>;
+  public stash: SauceStash;
 
   constructor(public ingredientService: IngredientService) {
+    const sojaStream$ = this.ingredientService.getIngredientStream<Soja>(Soja, 'soja');
+    const wasabiStream$ = this.ingredientService.getIngredientStream<Wasabi>(Wasabi, 'wasabi');
 
-    this.wasabi$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'wasabi');
+    this.stash = {
+      soja$: IngredientService.stashFromStream(sojaStream$),
+      wasabi$: IngredientService.stashFromStream(wasabiStream$),
+      all$: null
+    };
 
-    this.soja$ = this.ingredientService.ingredient$
-      .filter(ingredient => ingredient.name === 'soja');
+    this.stash.all$ = IngredientService.combineStashes(
+      this.stash.soja$,
+      this.stash.wasabi$,
+    )
 
-    this.sauce$ = Observable.merge(this.wasabi$, this.soja$);
   }
+}
+
+export interface SauceStash {
+  all$: Observable<Sauce[]>
+  soja$: Observable<Soja[]>;
+  wasabi$: Observable<Wasabi[]>;
 }

@@ -1,5 +1,7 @@
 import { Ingredient } from '../ingredient';
 
-export class Fish extends Ingredient {
-
+export abstract class Fish extends Ingredient {
+  public get expirationTime() {
+    return 2 * 60;
+  }
 }
